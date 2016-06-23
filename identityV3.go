@@ -42,7 +42,7 @@ type AuthV3 struct {
 type Project struct {
 	Name     string `mapstructure:"name"`
 	ID       string `mapstructure:"id"`
-	DomainId string `mapstructure:"domain_id"`
+	DomainID string `mapstructure:"domain_id"`
 }
 
 func NewAuthV3(authOpts AuthV3Options) Authentication {
@@ -164,7 +164,7 @@ func extractProject(body interface{}) (*Project, error) {
 	return &Project{
 		ID:       response.Token.ID,
 		Name:     response.Token.Name,
-		DomainId: response.Token.DomainId,
+		DomainID: response.Token.DomainID,
 	}, nil
 }
 

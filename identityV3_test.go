@@ -153,8 +153,8 @@ func TestAuthenticationProject(t *testing.T) {
 		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
 	}
 
-	if project.DomainId != "o-monsoon2" {
-		diffString := StringDiff(project.DomainId, "o-monsoon2")
+	if project.DomainID != "o-monsoon2" {
+		diffString := StringDiff(project.DomainID, "o-monsoon2")
 		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
 	}
 
