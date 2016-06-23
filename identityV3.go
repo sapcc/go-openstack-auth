@@ -3,6 +3,7 @@ package goOpenstackAuth
 import (
 	"fmt"
 
+	"github.com/mitchellh/mapstructure"
 	"github.com/rackspace/gophercloud"
 	"github.com/rackspace/gophercloud/openstack"
 	"github.com/rackspace/gophercloud/openstack/identity/v3/tokens"
@@ -29,12 +30,19 @@ var (
 type Authentication interface {
 	GetToken() (*tokens.Token, error)
 	GetServiceEndpoint(serviceType, region, serviceInterface string) (string, error)
+	GetProject() (*Project, error)
 }
 
 type AuthV3 struct {
 	Options     AuthV3Options
 	tokenResult *tokens.CreateResult
 	client      *gophercloud.ServiceClient
+}
+
+type Project struct {
+	Name     string `mapstructure:"name"`
+	ID       string `mapstructure:"id"`
+	DomainId string `mapstructure:"domain_id"`
 }
 
 func NewAuthV3(authOpts AuthV3Options) Authentication {
@@ -80,6 +88,17 @@ func (a *AuthV3) GetServiceEndpoint(serviceType, region, serviceInterface string
 	}
 
 	return endpoint, nil
+}
+
+func (a *AuthV3) GetProject() (*Project, error) {
+	if a.tokenResult == nil {
+		_, err := a.GetToken()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return extractProject(a.tokenResult.Body)
 }
 
 func (a *AuthV3) getAuthOptions() gophercloud.AuthOptions {
@@ -129,6 +148,25 @@ func (a *AuthV3) createTokenCommonResult() error {
 }
 
 // private
+
+func extractProject(body interface{}) (*Project, error) {
+	var response struct {
+		Token struct {
+			Project `mapstructure:"project"`
+		} `mapstructure:"token"`
+	}
+
+	err := mapstructure.Decode(body, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Project{
+		ID:       response.Token.ID,
+		Name:     response.Token.Name,
+		DomainId: response.Token.DomainId,
+	}, nil
+}
 
 func getServiceEndpoint(region string, serviceInterface string, entry *tokens.CatalogEntry) (string, error) {
 	if entry != nil && len(entry.Endpoints) > 0 {

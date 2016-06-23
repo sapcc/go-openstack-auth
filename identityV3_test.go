@@ -126,6 +126,44 @@ func TestAuthenticationGivenAWrongRegion(t *testing.T) {
 	}
 }
 
+func TestAuthenticationProject(t *testing.T) {
+	resetAuthentication()
+
+	options := AuthV3Options{
+		IdentityEndpoint: "http://some_test_url",
+		UserId:           "miau",
+		Password:         "123456789",
+		ProjectId:        "bup",
+	}
+
+	a := AuthenticationV3(options)
+	project, err := a.GetProject()
+	if err != nil {
+		t.Error(fmt.Sprint(`Expected to not get an error. `, err.Error()))
+		return
+	}
+
+	if project == nil {
+		t.Error(`Expected to not get an empty project. `)
+		return
+	}
+
+	if project.ID != "p-9597d2775" {
+		diffString := StringDiff(project.ID, "p-9597d2775")
+		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
+	}
+
+	if project.DomainId != "o-monsoon2" {
+		diffString := StringDiff(project.DomainId, "o-monsoon2")
+		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
+	}
+
+	if project.Name != "Arc_Development" {
+		diffString := StringDiff(project.Name, "Arc_Development")
+		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
+	}
+}
+
 //
 // Mock authentication interface
 //
@@ -160,6 +198,10 @@ func (a *MockV3) GetServiceEndpoint(serviceType, region, serviceInterface string
 	return endpoint, nil
 }
 
+func (a *MockV3) GetProject() (*Project, error) {
+	return extractProject(commonResult)
+}
+
 var catalog1 = tokens.ServiceCatalog{
 	Entries: []tokens.CatalogEntry{
 		{ID: "s-8be070817", Name: "Arc", Type: "arc", Endpoints: []tokens.Endpoint{
@@ -175,3 +217,5 @@ var catalog1 = tokens.ServiceCatalog{
 		}},
 	},
 }
+
+var commonResult = map[string]interface{}{"token": map[string]interface{}{"project": map[string]string{"id": "p-9597d2775", "domain_id": "o-monsoon2", "name": "Arc_Development"}}}
