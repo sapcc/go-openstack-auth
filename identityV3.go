@@ -22,6 +22,10 @@ type AuthV3Options struct {
 	ProjectDomainId   string
 }
 
+var (
+	AuthenticationV3 = NewAuthV3
+)
+
 type Authentication interface {
 	GetToken() (*tokens.Token, error)
 	GetServiceEndpoint(serviceType, region, serviceInterface string) (string, error)
@@ -33,7 +37,7 @@ type AuthV3 struct {
 	client      *gophercloud.ServiceClient
 }
 
-func New(authOpts AuthV3Options) Authentication {
+func NewAuthV3(authOpts AuthV3Options) Authentication {
 	return &AuthV3{Options: authOpts}
 }
 
