@@ -3,6 +3,10 @@ Go openstack auth v3 for getting tokens and endpoints
 
 Example:
 
+    import (
+    	auth "github.com/monsoon/go-openstack-auth"
+    )
+
 		options := auth.AuthV3Options{
 			IdentityEndpoint:  viper.GetString(ENV_VAR_AUTH_URL),
 			Region:            viper.GetString(ENV_VAR_REGION),
@@ -17,7 +21,7 @@ Example:
 			ProjectDomainId:   viper.GetString(ENV_VAR_PROJECT_DOMAIN_ID),
 		}
 
-		authV3 := auth.New(options)
+		authV3 := auth.AuthenticationV3(options)
 		token, err := authV3.GetToken()
 		if err != nil {
 			fmt.Println(err)
