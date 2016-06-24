@@ -9,7 +9,7 @@ import (
 	"github.com/rackspace/gophercloud/openstack/identity/v3/tokens"
 )
 
-type AuthV3Options struct {
+type AuthOptions struct {
 	IdentityEndpoint  string
 	Username          string
 	UserId            string
@@ -30,10 +30,11 @@ type Authentication interface {
 	GetToken() (*tokens.Token, error)
 	GetServiceEndpoint(serviceType, region, serviceInterface string) (string, error)
 	GetProject() (*Project, error)
+	GetOptions() *AuthOptions
 }
 
 type AuthV3 struct {
-	Options     AuthV3Options
+	Options     AuthOptions
 	tokenResult *tokens.CreateResult
 	client      *gophercloud.ServiceClient
 }
@@ -44,7 +45,7 @@ type Project struct {
 	DomainID string `mapstructure:"domain_id"`
 }
 
-func NewAuthV3(authOpts AuthV3Options) Authentication {
+func NewAuthV3(authOpts AuthOptions) Authentication {
 	return &AuthV3{Options: authOpts}
 }
 
