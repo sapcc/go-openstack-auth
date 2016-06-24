@@ -11,7 +11,6 @@ import (
 
 type AuthV3Options struct {
 	IdentityEndpoint  string
-	Region            string
 	Username          string
 	UserId            string
 	Password          string
