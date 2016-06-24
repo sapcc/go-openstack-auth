@@ -13,7 +13,7 @@ func resetAuthentication() {
 func TestAuthenticationTokenSuccess(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",
@@ -36,7 +36,7 @@ func TestAuthenticationTokenSuccess(t *testing.T) {
 func TestAuthenticationEndpointSuccess(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",
@@ -59,7 +59,7 @@ func TestAuthenticationEndpointSuccess(t *testing.T) {
 func TestAuthenticationEndpointNotGivenARegion(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",
@@ -82,7 +82,7 @@ func TestAuthenticationEndpointNotGivenARegion(t *testing.T) {
 func TestAuthenticationGivenARegion(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",
@@ -105,7 +105,7 @@ func TestAuthenticationGivenARegion(t *testing.T) {
 func TestAuthenticationGivenAWrongRegion(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",
@@ -127,7 +127,7 @@ func TestAuthenticationGivenAWrongRegion(t *testing.T) {
 func TestAuthenticationProject(t *testing.T) {
 	resetAuthentication()
 
-	options := AuthV3Options{
+	options := AuthOptions{
 		IdentityEndpoint: "http://some_test_url",
 		UserId:           "miau",
 		Password:         "123456789",

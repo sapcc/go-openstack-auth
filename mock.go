@@ -20,6 +20,10 @@ func NewMockAuthenticationV3(authOpts AuthOptions) Authentication {
 	return &MockV3{Options: authOpts}
 }
 
+func (a *MockV3) GetOptions() *AuthOptions {
+	return &a.Options
+}
+
 func (a *MockV3) GetToken() (*tokens.Token, error) {
 	token := tokens.Token{ID: "test_token_id"}
 	return &token, nil

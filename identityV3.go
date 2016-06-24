@@ -49,6 +49,10 @@ func NewAuthV3(authOpts AuthOptions) Authentication {
 	return &AuthV3{Options: authOpts}
 }
 
+func (a *AuthV3) GetOptions() *AuthOptions {
+	return &a.Options
+}
+
 func (a *AuthV3) GetToken() (*tokens.Token, error) {
 	var err error
 	err = a.createTokenCommonResult()
