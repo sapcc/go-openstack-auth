@@ -39,3 +39,14 @@ Example:
 		fmt.Println("°°°ENDPOINT°°°")
 		fmt.Println(endpoint)
 		fmt.Println("°°°")
+    
+For testing use the mock object:
+
+    import (
+    	auth "github.com/monsoon/go-openstack-auth"
+    )
+
+    func TestMock(t *testing.T) {
+    	auth.AuthenticationV3 = auth.NewMockAuthenticationV3
+    	auth.CommonResult1 = map[string]interface{}{"token": map[string]interface{}{"project": map[string]string{"id": "test_project_id", "domain_id": "monsooniii", "name": "Arc_Test"}}}
+    }
