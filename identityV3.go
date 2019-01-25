@@ -3,23 +3,26 @@ package goOpenstackAuth
 import (
 	"fmt"
 
+	"github.com/gophercloud/gophercloud"
+	"github.com/gophercloud/gophercloud/openstack"
+	"github.com/gophercloud/gophercloud/openstack/identity/v3/tokens"
 	"github.com/mitchellh/mapstructure"
-	"github.com/rackspace/gophercloud"
-	"github.com/rackspace/gophercloud/openstack"
-	"github.com/rackspace/gophercloud/openstack/identity/v3/tokens"
 )
 
 type AuthOptions struct {
-	IdentityEndpoint  string
-	Username          string
-	UserId            string
-	Password          string
-	ProjectName       string
-	ProjectId         string
-	UserDomainName    string
-	UserDomainId      string
-	ProjectDomainName string
-	ProjectDomainId   string
+	IdentityEndpoint            string
+	Username                    string
+	UserId                      string
+	Password                    string
+	ProjectName                 string
+	ProjectId                   string
+	UserDomainName              string
+	UserDomainId                string
+	ProjectDomainName           string
+	ProjectDomainId             string
+	ApplicationCredentialID     string
+	ApplicationCredentialName   string
+	ApplicationCredentialSecret string
 }
 
 var (
@@ -107,12 +110,15 @@ func (a *AuthV3) GetProject() (*Project, error) {
 
 func (a *AuthV3) getAuthOptions() gophercloud.AuthOptions {
 	return gophercloud.AuthOptions{
-		IdentityEndpoint: a.Options.IdentityEndpoint,
-		Username:         a.Options.Username,
-		UserID:           a.Options.UserId,
-		Password:         a.Options.Password,
-		DomainName:       a.Options.UserDomainName,
-		DomainID:         a.Options.UserDomainId,
+		IdentityEndpoint:            a.Options.IdentityEndpoint,
+		Username:                    a.Options.Username,
+		UserID:                      a.Options.UserId,
+		Password:                    a.Options.Password,
+		DomainName:                  a.Options.UserDomainName,
+		DomainID:                    a.Options.UserDomainId,
+		ApplicationCredentialID:     a.Options.ApplicationCredentialID,
+		ApplicationCredentialName:   a.Options.ApplicationCredentialName,
+		ApplicationCredentialSecret: a.Options.ApplicationCredentialSecret,
 	}
 }
 
@@ -122,17 +128,10 @@ func (a *AuthV3) getClient() (*gophercloud.ServiceClient, error) {
 	if err != nil {
 		return nil, err
 	}
-	return openstack.NewIdentityV3(provider), nil
+	return openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
 }
 
 func (a *AuthV3) createTokenCommonResult() error {
-	scope := tokens.Scope{
-		ProjectName: a.Options.ProjectName,
-		ProjectID:   a.Options.ProjectId,
-		DomainName:  a.Options.ProjectDomainName,
-		DomainID:    a.Options.ProjectDomainId,
-	}
-
 	// init the v3 client
 	var err error
 	if a.client == nil {
@@ -142,8 +141,21 @@ func (a *AuthV3) createTokenCommonResult() error {
 		}
 	}
 
+	opts := a.getAuthOptions()
+
+	// scope must not be used with application credential
+	if opts.ApplicationCredentialID == "" && opts.ApplicationCredentialName == "" {
+		scope := gophercloud.AuthScope(tokens.Scope{
+			ProjectName: a.Options.ProjectName,
+			ProjectID:   a.Options.ProjectId,
+			DomainName:  a.Options.ProjectDomainName,
+			DomainID:    a.Options.ProjectDomainId,
+		})
+		opts.Scope = &scope
+	}
+
 	// create common result
-	result := tokens.Create(a.client, a.getAuthOptions(), &scope)
+	result := tokens.Create(a.client, &opts)
 
 	// save common result
 	a.tokenResult = &result
