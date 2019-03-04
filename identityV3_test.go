@@ -33,6 +33,29 @@ func TestAuthenticationTokenSuccess(t *testing.T) {
 	}
 }
 
+func TestAppCredAuthenticationTokenSuccess(t *testing.T) {
+	resetAuthentication()
+
+	options := AuthOptions{
+		IdentityEndpoint:            "http://some_test_url",
+		UserId:                      "miau",
+		ApplicationCredentialName:   "app-cred-name",
+		ApplicationCredentialSecret: "app-cred-secret",
+	}
+
+	a := AuthenticationV3(options)
+	token, err := a.GetToken()
+	if err != nil {
+		t.Error(fmt.Sprint(`Expected to not get an error. `, err.Error()))
+		return
+	}
+
+	if !strings.Contains(token.ID, "test_token_id") {
+		diffString := StringDiff(token.ID, "test_token_id")
+		t.Error(fmt.Sprintf("Token does not match. \n \n %s", diffString))
+	}
+}
+
 func TestAuthenticationEndpointSuccess(t *testing.T) {
 	resetAuthentication()
 
