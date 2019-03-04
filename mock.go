@@ -3,7 +3,7 @@ package goOpenstackAuth
 import (
 	"net/http/httptest"
 
-	"github.com/rackspace/gophercloud/openstack/identity/v3/tokens"
+	"github.com/gophercloud/gophercloud/openstack/identity/v3/tokens"
 )
 
 //
