@@ -4,7 +4,7 @@ Go openstack auth v3 for getting tokens and endpoints
 Example:
 
     import (
-    	auth "github.com/monsoon/go-openstack-auth"
+    	auth "github.com/sapcc/go-openstack-auth"
     )
 
 		options := auth.AuthV3Options{
@@ -43,7 +43,7 @@ Example:
 For testing use the mock object:
 
     import (
-    	auth "github.com/monsoon/go-openstack-auth"
+    	auth "github.com/sapcc/go-openstack-auth"
     )
 
     func TestMock(t *testing.T) {
