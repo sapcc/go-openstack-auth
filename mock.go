@@ -65,7 +65,7 @@ var Catalog1 = tokens.ServiceCatalog{
 			{ID: "e-884f431c9", Region: "production", Interface: "public", URL: "https://arc-app-prod/public"},
 		}},
 		{ID: "s-d5e793744", Name: "Lyra", Type: "automation", Endpoints: []tokens.Endpoint{
-			{ID: "e-54b8d28fc", Region: "staging", Interface: "public", URL: "https://lyra.app"},
+			{ID: "e-54b8d28fc", Region: "staging", Interface: "public", URL: "https://lyra-app-staging"},
 		}},
 	},
 }
