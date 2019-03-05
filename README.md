@@ -39,7 +39,7 @@ Example:
 		fmt.Println("°°°ENDPOINT°°°")
 		fmt.Println(endpoint)
 		fmt.Println("°°°")
-    
+
 For testing use the mock object:
 
     import (
@@ -48,5 +48,5 @@ For testing use the mock object:
 
     func TestMock(t *testing.T) {
     	auth.AuthenticationV3 = auth.NewMockAuthenticationV3
-    	auth.CommonResult1 = map[string]interface{}{"token": map[string]interface{}{"project": map[string]string{"id": "test_project_id", "domain_id": "monsooniii", "name": "Arc_Test"}}}
+    	auth.CommonResult1 = map[string]interface{}{"token": map[string]interface{}{"project": map[string]string{"id": "test_project_id", "domain_id": "test_domain_id", "name": "Arc_Test"}}}
     }

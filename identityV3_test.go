@@ -23,7 +23,7 @@ func TestAuthenticationTokenSuccess(t *testing.T) {
 	a := AuthenticationV3(options)
 	token, err := a.GetToken()
 	if err != nil {
-		t.Error(fmt.Sprint(`Expected to not get an error. `, err.Error()))
+		t.Error(fmt.Sprint(`Expected to not get an error. But got `, err.Error()))
 		return
 	}
 
@@ -69,7 +69,7 @@ func TestAuthenticationEndpointSuccess(t *testing.T) {
 	a := AuthenticationV3(options)
 	endpoint, err := a.GetServiceEndpoint("arc", "staging", "public")
 	if err != nil {
-		t.Error(fmt.Sprint(`Expected to not get an error. `, err.Error()))
+		t.Error(fmt.Sprint(`Expected to not get an error. But got `, err.Error()))
 		return
 	}
 
@@ -179,8 +179,8 @@ func TestAuthenticationProject(t *testing.T) {
 		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
 	}
 
-	if project.Name != "Arc_Development" {
-		diffString := StringDiff(project.Name, "Arc_Development")
+	if project.Name != "" {
+		diffString := StringDiff(project.Name, "")
 		t.Error(fmt.Sprintf("Project id does not match. \n \n %s", diffString))
 	}
 }
